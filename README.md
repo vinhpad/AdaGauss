@@ -1,28 +1,40 @@
-# AdaGauss repository
+# AdaGauss+: Robust Feature Adaptation in Exemplar-Free Class Incremental Learning
 
-This repostory contains code for NeurIPS 2024 paper on Continual Learning: **Task-recency bias strikes back: Adapting covariances in Exemplar-Free Class Incremental Learning** (<https://arxiv.org/abs/2409.18265>). The repository is based on FACIL benchmark <https://github.com/mmasana/FACIL>.
+## Overview
 
-We consider exemplar free class incremental scenario, where we revisit the task-recency bias. Unlike previous works, that focused on the biased classification head, we look at the latent space. We show that old class representations have lower ranks than new classes and this is the core of the problem. We solve this issue with anti-collapse loss. Additionally, we are first to adapt covariances on classes from old tasks to the new one.
+AdaGauss+ is an advanced method for Exemplar-Free Class Incremental Learning (EFCIL) that significantly improves upon the AdaGauss baseline. Our approach addresses key limitations in continual learning scenarios where models must learn new classes sequentially without storing previous task data.
 
-In our method we train feature extractor on all tasks using: cross-entropy, feature distillation through a neural projector and anti-collapse loss functions. We represent each class as Gaussian distribution in the latent space. After each task we transform these distributions from the old model's latent space to the new using an auxilary neural network (to alleviate semantic drift problem).
+### Key Contributions
 
-![image](images/method.png?raw=true "Adagauss")
+- **Contrastive Loss with Pseudo-Prototypes**: Uses virtual exemplars sampled from memorized distributions to enhance feature discrimination
+- **Attention-Based Adapter Network**: Employs attention mechanisms for nuanced, dimension-aware adaptation of past class distributions
 
-### Setup
-Create virtual environment and install dependencies:
+## Method Architecture
+
+![AdaGauss+ Architecture](images/method.png)
+
+Our method extends AdaGauss with three key components:
+1. **Contrastive Learning**: Leverages pseudo-prototypes from past class distributions to maintain knowledge
+2. **Attention-Based Adaptation**: Prioritizes important feature dimensions for more precise distribution transformation
+
+## Setup
+
 ```bash
-python3 -m venv venv && source venv/bin/activate
-pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118
-pip install requirements.txt
+# Create conda environment
+conda create -n adagauss_plus python=3.8
+conda activate adagauss_plus
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-Reproduce experiments using scripts in ```scripts``` directory:
-```bash
-bash scripts/cifar-10x10.sh
-```
+## Usage
 
-### To run pretrained ViT download a model from https://github.com/facebookresearch/dino: 
+### Training Configuration
+
 ```bash
-mkdir pretrained && cd pretrained
-wget https://dl.fbaipublicfiles.com/dino/dino_deitsmall16_pretrain/dino_deitsmall16_pretrain.pth
+# Train on CIFAR-100 with 10 tasks
+bash scripts/cifar-10x10.sh 
+# Train on TinyImageNet with 20 tasks
+bash scripts/tiny-20x5.sh 
 ```
