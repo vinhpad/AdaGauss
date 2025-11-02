@@ -11,7 +11,7 @@ AdaGauss+ is an advanced method for Exemplar-Free Class Incremental Learning (EF
 
 ## Method Architecture
 
-![AdaGauss+ Architecture](images/method.png)
+![AdaGauss+ Architecture](images/method_new.png)
 
 Our method extends AdaGauss with three key components:
 1. **Contrastive Learning**: Leverages pseudo-prototypes from past class distributions to maintain knowledge
